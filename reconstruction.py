@@ -5,7 +5,7 @@ Requires: google-generativeai, duckduckgo-search, python-dotenv
 """
 
 import google.generativeai as genai
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 import os
 from dotenv import load_dotenv
 
@@ -17,7 +17,7 @@ if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY not found in .env file. Get one from https://aistudio.google.com/app/apikey")
 
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-2.0-flash')
 
 # Initialize DuckDuckGo search
 search_engine = DDGS()
@@ -68,34 +68,47 @@ def search_context(reconstructed: str) -> list:
         print(f"Search error: {str(e)}")
         return []
 
+# --- Updated generate_report with aligned box ---
+BOX_WIDTH = 85
+
+def pad_line(content: str) -> str:
+    """Pad content to fit inside the box with borders."""
+    content = content[:BOX_WIDTH]  # truncate if too long
+    return f"│ {content.ljust(BOX_WIDTH - 2)} │"
+
 def generate_report(original_fragment: str, reconstructed: str, sources: list) -> str:
     """
     Generate a formatted report summarizing the archeology.
+    (Updated: shows full URLs on separate lines)
     """
-    report = f"""
-╔══════════════════════════════════════════════════════════════════════════════╗
-│                          PROJECT CHRONOS REPORT                               │
-║                                                                              ║
-│ Original Fragment: {original_fragment}                                          │
-│ Reconstructed Text: {reconstructed}                                             │
-│                                                                              │
-│ Analysis: This fragment appears to be from an old digital source. The AI     │
-│ reconstructed it by correcting common internet-era corruptions (e.g.,        │
-│ leetspeak, encoding errors). Confidence: High (based on Gemini model).       │
-│                                                                              │
-"""
+    report_lines = []
+    report_lines.append("╔" + "═"*BOX_WIDTH + "╗")
+    report_lines.append(pad_line("PROJECT CHRONOS REPORT"))
+    report_lines.append(pad_line(""))
+
+    report_lines.append(pad_line(f"Original Fragment: {original_fragment}"))
+    report_lines.append(pad_line(f"Reconstructed Text: {reconstructed}"))
+    report_lines.append(pad_line(""))
+
+    report_lines.append(pad_line("Analysis: This fragment appears to be from an old digital source."))
+    report_lines.append(pad_line("The AI reconstructed it by correcting common internet-era corruptions"))
+    report_lines.append(pad_line("(e.g., leetspeak, encoding errors). Confidence: High (based on Gemini model)."))
+    report_lines.append(pad_line(""))
 
     if sources:
-        report += "│ Context Sources Found (Top 5 from Web Search):                     │\n"
+        report_lines.append(pad_line("Context Sources Found (Top 5 from Web Search):"))
         for i, source in enumerate(sources, 1):
-            report += f"│ {i}. {source['title'][:50]}... ({source['url'][:60]}...) │\n"
+            title = source["title"]
+            url = source["url"]
+            report_lines.append(pad_line(f"{i}. {title}"))
+            report_lines.append(pad_line(f"   🔗 {url}"))
+            report_lines.append(pad_line(""))  # spacing line between entries
     else:
-        report += "│ No relevant sources found—may be truly obscure!                          │\n"
+        report_lines.append(pad_line("No relevant sources found—may be truly obscure!"))
 
-    report += """
-║                                                                              ║
-│ Next Steps: Review sources for historical context. Run again with more       │
-│ fragments for deeper analysis.                                               │
-╚══════════════════════════════════════════════════════════════════════════════╝
-    """
-    return report.strip()
+    report_lines.append(pad_line(""))
+    report_lines.append(pad_line("Next Steps: Review sources for historical context."))
+    report_lines.append(pad_line("Run again with more fragments for deeper analysis."))
+    report_lines.append("╚" + "═"*BOX_WIDTH + "╝")
+
+    return "\n".join(report_lines)
