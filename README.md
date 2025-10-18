@@ -80,12 +80,17 @@ __pycache__/
 *.pyc
 reconstruction_report.txt
 
-Final running:
+#Final running:
 git clone https://github.com/ruchitakolla-dotcom/project-chronos
+
 cd project-chronos
+
 python -m venv venv
+
 venv\Scripts\activate
+
 pip install -r requirements.txt
+
 python main.py "Ths is 3sha"
 
 
