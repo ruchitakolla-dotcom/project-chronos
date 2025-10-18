@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-"""
-Project Chronos: The AI Archeologist
-A command-line tool to reconstruct obscure digital text fragments using AI and web context.
-"""
-
 import os
 import sys
 import time
@@ -13,7 +8,6 @@ from reconstruction import reconstruct_text, search_context, generate_report
 init(autoreset=True)
 
 def spinner(message, duration=2):
-    """Show a simple spinner animation for better UX."""
     spinner_chars = "|/-\\"
     end_time = time.time() + duration
     while time.time() < end_time:
@@ -46,17 +40,17 @@ def main():
 
     for idx, fragment in enumerate(fragments, 1):
         print(Fore.CYAN + f"\n[{idx}/{len(fragments)}] Processing fragment: {fragment}" + Style.RESET_ALL)
-        spinner("🔍 Scanning digital archives...")
+        spinner("Scanning digital archives...")
 
         reconstructed = reconstruct_text(fragment)
         if not reconstructed:
-            print(Fore.RED + "❌ Error: Failed to reconstruct text." + Style.RESET_ALL)
+            print(Fore.RED + "Error: Failed to reconstruct text." + Style.RESET_ALL)
             continue
 
         spinner("🌐 Searching for historical context...")
         sources = search_context(reconstructed)
         if not sources:
-            print(Fore.YELLOW + "⚠️  Warning: No sources found." + Style.RESET_ALL)
+            print(Fore.YELLOW + " Warning: No sources found." + Style.RESET_ALL)
 
         report = generate_report(fragment, reconstructed, sources)
         print(Fore.GREEN + report + Style.RESET_ALL)
@@ -64,9 +58,9 @@ def main():
         filename = f"reconstruction_report_{idx}.txt"
         with open(filename, "w", encoding="utf-8") as f:
             f.write(report)
-        print(Fore.BLUE + f"\n📄 Report saved to '{filename}'" + Style.RESET_ALL)
+        print(Fore.BLUE + f"\nReport saved to '{filename}'" + Style.RESET_ALL)
 
-    print(Fore.MAGENTA + "\n✨ All fragments processed successfully. Goodbye, time traveler!" + Style.RESET_ALL)
+    print(Fore.MAGENTA + "\n All fragments processed successfully. Goodbye, time traveler!" + Style.RESET_ALL)
 
 if __name__ == "__main__":
     load_dotenv()  # Load .env file for API keys
