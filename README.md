@@ -1,4 +1,4 @@
-                                                                **Project Chronos: The AI Archeologist**
+                                                          **Project Chronos: The AI Archeologist**
         
 
 **Student Information**
