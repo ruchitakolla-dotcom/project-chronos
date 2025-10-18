@@ -52,7 +52,7 @@ Step-by-step guidance for fragment analysis
 
 **Setup Instructions:**
 1.Clone the Repository: Open cmd and run: 
-git clone https://github.com/<your-username>/project-chronos.git
+git clone https://github.com/ruchitakolla-dotcom/project-chronos
 cd project-chronos
 
 This helps you copy all project files to the local machine and navigate into the project folder.
@@ -80,6 +80,13 @@ __pycache__/
 *.pyc
 reconstruction_report.txt
 
+Final running:
+git clone https://github.com/ruchitakolla-dotcom/project-chronos
+cd project-chronos
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python main.py "Ths is 3sha"
 
 
 **Usage:**
