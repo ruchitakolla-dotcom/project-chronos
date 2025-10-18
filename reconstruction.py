@@ -1,17 +1,9 @@
-"""
-Reconstruction module for Project Chronos.
-Handles AI-based text reconstruction, context search, and report generation.
-Requires: google-generativeai, duckduckgo-search, python-dotenv
-"""
-
 import google.generativeai as genai
 from ddgs import DDGS
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# Configure Gemini AI (get API key from Google AI Studio)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY not found in .env file. Get one from https://aistudio.google.com/app/apikey")
@@ -19,14 +11,9 @@ if not GEMINI_API_KEY:
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
-# Initialize DuckDuckGo search
 search_engine = DDGS()
 
 def reconstruct_text(fragment: str) -> str:
-    """
-    Use Gemini AI to reconstruct the fragmented text.
-    Example: Input "th3 qu1ck br0wn f0x" -> Output "The quick brown fox"
-    """
     prompt = f"""
     You are an expert in reconstructing corrupted or fragmented digital text from old internet archives.
     The fragment is: "{fragment}"
@@ -50,10 +37,6 @@ def reconstruct_text(fragment: str) -> str:
         return f"Error in reconstruction: {str(e)}"
 
 def search_context(reconstructed: str) -> list:
-    """
-    Search the web for context/sources related to the reconstructed text.
-    Uses DuckDuckGo for quick, relevant results.
-    """
     try:
         results = search_engine.text(reconstructed, max_results=5)
         sources = []
