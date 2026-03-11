@@ -1,18 +1,6 @@
                                                           **Project Chronos: The AI Archeologist**
         
 
-**Student Information**
-
-
-1)Name: Kolla Taruni Venkata Ruchita  
- ID: SE24UARI086
- Branch: AI
- 
-2)Name: Jetti Laasya  
- ID: SE24UARI104
- Branch: AI 
-
- 
 **Project Description:**
 Project Chronos is an AI-powered digital archaeologist that reconstructs incomplete, damaged, or obscure text fragments from old web archives. Many web pages, documents, or historical data may be lost or corrupted over time. Project Chronos helps researchers, historians, and archivists preserve digital history.
 It uses advanced AI algorithms to analyze incomplete text and predict missing segments, ensuring the reconstructed content is coherent, contextually accurate, and faithful to the original. It examines patterns, context, and linguistic structures to repair inconsistencies in fragmented text.
